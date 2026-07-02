@@ -10,5 +10,6 @@ pnpm start
 ## To test the backend
 
 ```shell
+pnpm i
 pnpm test
 ```
