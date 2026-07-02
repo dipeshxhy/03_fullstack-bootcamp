@@ -5,12 +5,14 @@ import logger from '../logger.js';
 import morgan from 'morgan';
 import { ApiError } from './utils/api-error.js';
 import { errorHandler } from './middlewares/error-handler.js';
+import userRouter from './router/user.router.js';
 
 const morganFormat = ':method :url :status :response-time ms';
 
 const app = express();
 app.use(express.urlencoded({ extended: true, limit: '20kb' }));
 app.use(express.json({ limit: '20kb' }));
+// cors setup
 app.use(
   cors({
     origin: process.env.CLIENT_URL || 'http://localhost:3000',
@@ -47,6 +49,9 @@ app.use(
 app.get('/healthcheck', (req, res) => {
   res.status(200).json({ message: 'Server is up ' });
 });
+
+// routes
+app.use('/users', userRouter);
 
 app.all('/api/{*splat}', (req, res) => {
   throw ApiError.notFound(`Can't find ${req.originalUrl} on this server!`);
